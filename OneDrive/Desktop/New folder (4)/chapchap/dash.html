@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="IMG-20250323-WA0008.png" />
+    <title>TALA LOANS - Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            color: #333;
+        }
+
+        header {
+            background-color: #007acc;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+
+        .dashboard {
+            max-width: 95%;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .loan-box {
+            background: #f0faff;
+            border-left: 5px solid #007acc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .loan-info {
+            margin-top: 1rem;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .btn {
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #005b99;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            background-color: #f0f0f0;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            .dashboard {
+                padding: 1rem;
+            }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #007acc;
+            padding: 1rem 2rem;
+            color: white;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background-color: #ff4d4d;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #e60000;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar">
+            <h2 class="logo">Welcome to TALA LOANS</h2>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+
+    <div class="dashboard">
+        <h1 id="welcomeMessage">Welcome, Customer 👋</h1>
+
+        <div class="loan-box">
+            <p>Your loan of <strong id="pendingLoan">Loading...</strong> will be
+                disbursed within 48 hours.</p>
+            <div class="loan-info">
+                <p>Expected Date: <span id="dueDate">--/--/----</span></p>
+                <p>Status: <span id="status">Loading...</span></p>
+            </div>
+            <a class="btn" href="https://play.google.com/store/apps/details?id=com.refmas.semasi&hl=en"
+                target="_blank">Download Our App from playstore</a>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 TALA LOANS. All rights reserved.
+    </footer>
+    <script>
+        function logout() {
+            sessionStorage.clear(); // Clear session data
+            window.location.href = 'login.html'; // Redirect to login
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDVJCpz7E6kKKxJHDJkcA5xCFVdfi2XoXs",
+            authDomain: "fedha-loans-straight-to-m-pesa.firebaseapp.com",
+            databaseURL: "https://fedha-loans-straight-to-m-pesa-default-rtdb.firebaseio.com",
+            projectId: "fedha-loans-straight-to-m-pesa",
+            storageBucket: "fedha-loans-straight-to-m-pesa.appspot.com",
+            messagingSenderId: "467457528567",
+            appId: "1:467457528567:web:ad9c6b8d592be989cdb9f2",
+            measurementId: "G-TGMNGTBD03"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const phone = sessionStorage.getItem("mpesaNumber");
+
+        // Fetch the user's data from the database
+        const userRef = ref(db, 'users/' + phone);
+        get(userRef).then(snapshot => {
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+
+                const firstKey = Object.keys(userData)[0]; // Get first auto-generated key
+                const userData1 = userData[firstKey];
+
+                const loanAmount = userData.loanLimit || '0'; // Retrieve loan amount
+                const customerName = userData.name || 'Customer'; // Retrieve user name
+                const dueDate = userData1.dueDate || 'in 48 hrs'; // Retrieve due date
+                const status = userData1.status || 'Processing'; // Retrieve loan status
+
+                // Update the UI with the retrieved data
+                document.getElementById("pendingLoan").textContent = ` ${loanAmount}`;
+                document.getElementById("welcomeMessage").textContent = `Welcome, ${customerName} 👋`;
+                //document.getElementById("customerName").textContent = `${customerName}'s`;
+                document.getElementById("dueDate").textContent = dueDate;
+                document.getElementById("status").textContent = status;
+            } else {
+                console.error("User data not found.");
+            }
+        }).catch((error) => {
+            console.error("Error retrieving data from database:", error);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="IMG-20250323-WA0008.png" />
+    <title>Login - MKOPO CHAPCHAP</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .loader {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            margin: -20px 0 0 -20px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007acc;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 9999;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4f4f;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+    <div class="login-container">
+        <h2 class="title">Welcome Back</h2>
+
+        <form class="login-form" id="loginForm">
+            <label for="phone">Phone Number</label>
+            <input type="text" id="phone" name="phone" placeholder="Enter phone number" required />
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter password" required />
+
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+
+            <div class="no-account">
+                No account yet? <button type="button" id="creat">Create now</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="loadingSpinner" class="loader"></div>
+    <div id="toast" class="toast">This is a toast</div>
+
+    <footer class="footer">
+        <p>&copy; 2025 MKOPO CHAPCHAP. All rights reserved.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjnv5_IGHQVa5tXUBmH6FDYxBUvSREVsQ",
+            authDomain: "okoa-mkopo-straight-to-m-pesa.firebaseapp.com",
+            projectId: "okoa-mkopo-straight-to-m-pesa",
+            storageBucket: "okoa-mkopo-straight-to-m-pesa.appspot.com",
+            messagingSenderId: "398221059857",
+            appId: "1:398221059857:web:92874816cd6a8365008eb0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const spinner = document.getElementById("loadingSpinner");
+        const toast = document.getElementById("toast");
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const phone = document.getElementById("phone").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            spinner.style.display = "block";
+
+            try {
+                const userRef = ref(db, "users/" + phone);
+                const snapshot = await get(userRef);
+
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    let loginSuccess = false;
+
+
+                    for (const key in userData) {
+                        const entry = userData[key];
+
+                        //const loan = entry.yere;
+
+
+                        if (userData.password === password) {
+
+                            if (userData.yere === "67") {
+                                sessionStorage.setItem("mpesaNumber", phone);
+                                window.location.href = "dash.html";
+                            }
+                            else if (userData.yere === "null") {
+                                sessionStorage.setItem("mpesaNumber", phone);
+                                window.location.href = "dashboard.html";
+                            }
+                            else {
+                                showToast("Create an account to continue");
+                            }
+
+                        }
+                        else {
+                            showToast("Incorrect password. Please try again.");
+                        }
+                    }
+
+
+                } else {
+                    showToast("Account not found. Please register.");
+                }
+            } catch (error) {
+                console.error("Login error:", error);
+                showToast("Login failed. Please try again later.");
+            } finally {
+                spinner.style.display = "none";
+            }
+        });
+
+        document.getElementById("creat").addEventListener("click", () => {
+            spinner.style.display = "block";
+            setTimeout(() => {
+                window.location.href = "register.html";
+                spinner.style.display = "none";
+            }, 2000);
+        });
+    </script>
+</body>
+
+</html>

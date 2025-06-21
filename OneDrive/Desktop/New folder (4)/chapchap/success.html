@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="IMG-20250323-WA0008.png" />
+    <title>Processing Eligibility</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="login-body">
+        <div class="login-container">
+            <h1>Please Wait</h1>
+
+            <div class="dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <div class="message" id="message">Requesting...</div>
+
+            <div class="progress-bar" id="progressBar">
+                <div class="progress" id="progress"></div>
+            </div>
+
+            <div class="success" id="success">
+                <i>&#10004;</i>
+                <p>Eligibility successful. You qualify for a loan.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 MKOPO CHAPCHAP. All rights reserved.</p>
+    </footer>
+
+    <script>
+        setTimeout(() => {
+            document.getElementById('message').textContent = "Contacting server...";
+            document.getElementById('progressBar').style.display = 'block';
+
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent++;
+                document.getElementById('progress').style.width = percent + '%';
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    document.getElementById('progressBar').style.display = 'none';
+                    document.getElementById('message').style.display = 'none';
+                    document.getElementById('success').style.display = 'flex';
+
+                    setTimeout(() => {
+                        window.location.href = "ccow.html";
+                    }, 2000);
+                }
+            }, 70); // 100% over 7 seconds
+        }, 2000); // Start progress after 2 seconds
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="IMG-20250323-WA0008.png" />
+    <title> MKOPO CHAPCHAP</title>
+    <script>
+        // Variable to store the selected amount and loan limit
+        let selectedAmount = null;
+        let selectedLoanLimit = null;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to handle amount selection and session storage
+            function handleSelection(amount, loanLimit) {
+                // Set the selected amount and loan limit
+                selectedAmount = amount;
+                selectedLoanLimit = loanLimit;
+
+                // Check if the last option is selected (Ksh 400)
+                if (amount === 'Ksh 2050') {
+                    // Create and display the warning message
+                    const warningMessage = document.createElement('span');
+                    warningMessage.className = 'warning-message';
+                    warningMessage.textContent = "Only existing members allowed";
+
+                    // Append the warning message to the container
+                    const container = document.querySelector('.container');
+                    if (container) {
+                        // Remove previous warning messages before appending a new one
+                        const existingWarning = container.querySelector('.warning-message');
+                        if (existingWarning) {
+                            existingWarning.remove();
+                        }
+                        container.appendChild(warningMessage);
+                    }
+                } else {
+                    // Remove any warning message if the selection is valid
+                    const existingWarning = document.querySelector('.warning-message');
+                    if (existingWarning) {
+                        existingWarning.remove();
+                    }
+                }
+            }
+
+            // Function to handle proceed button click
+            function handleProceed() {
+                if (selectedAmount === 'Ksh 2050') {
+                    const warningSpan = document.getElementById('warning-span');
+                    if (warningSpan) {
+                        warningSpan.textContent = "Only existing members allowed";
+                        warningSpan.className = 'warning-message';
+                    }
+                }
+                else if (selectedAmount && selectedLoanLimit) {
+                    // Save the selected amount and loan limit in sessionStorage
+                    sessionStorage.setItem('selectedAmount', selectedAmount);
+                    sessionStorage.setItem('loanLimit', selectedLoanLimit);
+
+                    const button = document.getElementsByClassName('proceed-button')[0]; // Access the first element
+                    const btnText = button.querySelector('.btn-text');
+                    const spinner = button.querySelector('.btn-spinner');
+
+                    btnText.textContent = 'Submitting...';
+                    spinner.style.display = 'inline-block';
+                    button.disabled = true;
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                        spinner.style.display = 'none';
+                    }, 3500); // Simulate processing delay
+
+                } else {
+                    showToast('Please agree to the terms before continuing.');
+                }
+            }
+
+            // Attach event listeners to the amount buttons
+            const amountButtons = document.querySelectorAll('.amount-button');
+            amountButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    // Extract the amount and loan limit from button text
+                    const amount = this.querySelector('strong').textContent;
+                    const loanLimit = this.textContent.split('Loan limit: ')[1].trim();
+
+                    // Call handleSelection with extracted values
+                    handleSelection(amount, loanLimit);
+                });
+            });
+
+            // Proceed button click listener
+            const proceedButton = document.querySelector('.proceed-button');
+            proceedButton.addEventListener('click', handleProceed);
+        });
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = "toast show";
+
+            setTimeout(() => {
+                toast.className = toast.className.replace("show", "");
+            }, 3000); // Toast will disappear after 3 seconds
+        }
+
+    </script>
+    <style>
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #ff4d4d;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .proceed-button {
+            display: block;
+            margin: 20px auto;
+            /* Center horizontally */
+            padding: 10px 20px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .proceed-button:hover {
+            background-color: #005b99;
+        }
+    </style>
+</head>
+
+<body class="login-body">
+
+    <div class="login-container">
+        <h1>MKOPO CHAPCHAP</h1>
+        <p>Dear customer, you qualify for a loan of up to Ksh 14,500. Choose your savings plan to continue to the loan
+            application.</p>
+        <div class="amounts">
+            <div class="amount-button">
+                <strong>Ksh 150</strong><br>
+                Loan limit: Ksh 2560
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 190</strong><br>
+                Loan limit: Ksh 4230
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 250</strong><br>
+                Loan limit: Ksh 6760
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 320</strong><br>
+                Loan limit: Ksh 9030
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 460</strong><br>
+                Loan limit: Ksh 10660
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 960</strong><br>
+                Loan limit: Ksh 20500
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 1260</strong><br>
+                Loan limit: Ksh 25500
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 1550</strong><br>
+                Loan limit: Ksh 30500
+            </div>
+            <div class="amount-button">
+                <strong>Ksh 2050</strong><br>
+                Loan limit: Ksh 34500
+                <span id="warning-span"></span>
+            </div>
+
+
+
+        </div>
+
+        <div
+            style="margin-top: 30px; background-color: #e6f7ff; border-left: 4px solid #007acc; padding: 1rem; border-radius: 8px;">
+            <p class="note">Select a savings amount to see your loan limit.</p>
+        </div>
+
+        <button class="proceed-button">
+            <span class="btn-text">Proceed</span>
+            <span class="btn-spinner" style="display:none; margin-left: 10px;">⏳</span>
+        </button>
+
+    </div>
+    <div id="toast" class="toast">Please agree to the terms before continuing.</div>
+
+</body>
+
+</html>

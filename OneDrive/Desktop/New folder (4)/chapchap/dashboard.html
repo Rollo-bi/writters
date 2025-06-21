@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="IMG-20250323-WA0008.png" />
+    <title>Loan Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCjnv5_IGHQVa5tXUBmH6FDYxBUvSREVsQ",
+            authDomain: "okoa-mkopo-straight-to-m-pesa.firebaseapp.com",
+            projectId: "okoa-mkopo-straight-to-m-pesa",
+            storageBucket: "okoa-mkopo-straight-to-m-pesa.appspot.com",
+            messagingSenderId: "398221059857",
+            appId: "1:398221059857:web:92874816cd6a8365008eb0",
+            measurementId: "G-T0MQ5Q1FW1"
+        };
+
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+    </script>
+
+    <style>
+        /* your same styles... */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #007acc;
+            margin-bottom: 1rem;
+        }
+
+        .summary {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .summary p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .loan-details,
+        .mpesa-info {
+            background-color: #f1faff;
+            padding: 1rem;
+            border-left: 4px solid #007acc;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .loan-details div,
+        .mpesa-info div {
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .apply-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .apply-button:hover {
+            background-color: #005b99;
+        }
+
+        .spinner {
+            display: none;
+            margin-left: 10px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <h2>Loan Summary</h2>
+        <div class="summary">
+            <p>Loan Amount Qualified: Ksh 14,500</p>
+            <p>Term: 61 days</p>
+            <p>Receive Amount: Ksh 13,456</p>
+        </div>
+
+        <div class="loan-details" id="loan-details">
+            <div><strong>Selected Limit:</strong> <span id="selected-limit"></span></div>
+            <div><strong>Service Fee:</strong> <span id="service-fee"></span></div>
+            <div><strong>Interest Rate:</strong> 7.8%</div>
+            <div><strong>Interest Applied:</strong> <span id="interest-applied"></span></div>
+            <div><strong>Disbursable to M-Pesa:</strong> <span id="disbursable"></span></div>
+        </div>
+
+        <div class="mpesa-info">
+            <div><strong>M-Pesa Number:</strong> <span id="mpesa-number">Loading...</span></div>
+            <div><strong>Account Name:</strong> <span id="account-name">Loading...</span></div>
+        </div>
+
+        <button class="apply-button" id="applyBtn">
+            <span id="applyText">Apply Now</span>
+            <span class="spinner" id="applySpinner">⏳</span>
+        </button>
+
+        <footer class="footer">
+            &copy; 2025 MKOPO CHAPCHAP. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectedAmount = sessionStorage.getItem('selectedAmount') || 'Ksh 0';
+            const selectedLimit = sessionStorage.getItem('loanLimit') || 'Ksh 0';
+
+            const mpesa = sessionStorage.getItem('mpesaNumber');
+            const accountName = sessionStorage.getItem('accountName');
+
+            // const mpesa = sessionStorage.getItem('mpesa');
+
+            const numericLimit = parseFloat(selectedLimit.replace(/[^\d.]/g, '')) || 0;
+            const disbursable = (numericLimit * 0.928).toFixed(2);
+            const interest = (numericLimit - disbursable).toFixed(2);
+
+            document.getElementById('selected-limit').textContent = selectedLimit;
+            document.getElementById('service-fee').textContent = selectedAmount;
+            document.getElementById('interest-applied').textContent = `Ksh ${interest}`;
+            document.getElementById('disbursable').textContent = `Ksh ${disbursable}`;
+
+            // Retrieve user data from Firebase
+            if (mpesa) {
+                db.ref('users/' + mpesa).once('value')
+                    .then(snapshot => {
+                        const data = snapshot.val();
+                        if (data) {
+                            document.getElementById('mpesa-number').textContent = data.mpesa;
+                            document.getElementById('account-name').textContent = data.name || 'Customer';
+                        } else {
+                            document.getElementById('mpesa-number').textContent = 'Not found';
+                            document.getElementById('account-name').textContent = 'N/A';
+                        }
+                    })
+                    .catch(err => {
+                        document.getElementById('mpesa-number').textContent = 'Error';
+                        document.getElementById('account-name').textContent = 'Error';
+                        console.error('Error fetching user:', err);
+                    });
+            } else {
+                document.getElementById('mpesa-number').textContent = 'Not provided';
+                document.getElementById('account-name').textContent = 'N/A';
+            }
+
+            const applyBtn = document.getElementById('applyBtn');
+            const applyText = document.getElementById('applyText');
+            const applySpinner = document.getElementById('applySpinner');
+
+            applyBtn.addEventListener('click', () => {
+                sessionStorage.setItem('awardedLoan', selectedLimit);
+                sessionStorage.setItem('serviceFee', selectedAmount);
+                sessionStorage.setItem('interest', `Ksh ${interest}`);
+
+                applyText.style.display = 'none';
+                applySpinner.style.display = 'inline-block';
+
+                setTimeout(() => {
+                    window.location.href = 'things.html';
+                    applySpinner.style.display = 'none';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+
+</html>
