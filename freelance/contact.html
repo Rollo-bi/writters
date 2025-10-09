@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/6847ed686e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle" />
+
+    <title>Contacts</title>
+</head>
+
+<body>
+    <header>
+        <!-- Hamburger Menu Icon -->
+
+        <div style="display: flex; margin-left: 20px;">
+            <div class="container" onclick="toggleMenu(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <p class="animated-text">FREELANCE GRID WRITERS</p>
+            <span class="material-symbols-outlined">
+                account_circle
+            </span>
+        </div>
+    </header>
+    <!-- Dropdown Menu -->
+    <div class="dropdown">
+        <a href="index.html"> <i class="fa-solid fa-house"></i> Home</a>
+        <a href="contact.html"> <i class="fa-solid fa-message"></i> Contact</a>
+        <a href="signin.html"> <i class="fa-solid fa-user"></i> Login</a>
+        <a href="signup.html"> <i class="fa-solid fa-plus"></i> Join Us</a>
+    </div>
+    <p color: rgb(45, 248, 38); color: rgb(45, 248, 38);
+        style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: xx-large; font-weight: bolder; margin-top: 80px; text-align: center; color:  rgb(12, 163, 7);">
+        In case of any Issues,<br> <span class="highlight">We'd love to hear from you</span>
+        <img class="im" src="image/Internet_20250209_222335_4.webp" title="hdh">
+    </p>
+    <div class="form-container">
+        <h2>Contact Us</h2>
+        <form action="/submit" method="POST">
+            <div class="form-group">
+                <label for="fullName" style="color: black;">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email" style="color: black;">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="subject" style="color: black;">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+            <div class="form-group">
+                <label for="projectDescription" style="color: black;">Tell us about the project</label>
+                <textarea id="projectDescription" name="projectDescription" required></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <footer style="background-color: black;  margin-top: 20px;">
+        <p style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">FREELANCE GRID
+            WRITERS</p>
+        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
+            &copy; 2025 FREELANCE GRID. All Rights Reserved.</p>
+        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
+            Designed by Rollo Houd</p>
+        <div style="display: flex; width: 100%;">
+            <div style="width: 30%;">
+                <p
+                    style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-bottom: 20px; margin-top: 20px; ">
+                    Sitemap</p>
+                <a href="" style="margin-top: 15px;">Privacy Policy</a>
+            </div>
+
+            <div style="width: 30%; margin-left: 50px;">
+                <p
+                    style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-top: 20px; margin-bottom: 20px; ">
+                    Social</p>
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-x-twitter"></i>
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu(x) {
+            x.classList.toggle("change");
+            document.body.classList.toggle("menu-active");
+        }
+        function logout() {
+            // Clear session storage
+            sessionStorage.clear();
+
+            // Redirect to sign-in page
+            window.location.href = "signin.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

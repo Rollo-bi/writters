@@ -1,0 +1,14 @@
+{
+    "name": "Freelance Grid",
+    "short_name": "Freelancer",
+    "start_url": "https://w3sfreelancewriter.web.app/index.html",
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "image/res.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ]
+  }
+  
