@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/6847ed686e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle" />
+    <link rel="stylesheet" href="style.css">
+    <title>awarded</title>
+</head>
+
+<body>
+    <header>
+        <!-- Hamburger Menu Icon -->
+
+        <div style="display: flex; margin-left: 20px;">
+            <div class="container" onclick="openNav(this)">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+            </div>
+            <p class="animated-text">FREELANCE GRID WRITERS</p>
+            <div id="profileCircle" class="profile-circle" style=" width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #91af4c; /* You can customize this color */
+            color: rgb(168, 23, 23);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+            text-transform: uppercase;
+            
+            margin-right: 5%;
+            padding: 7px;
+            border-color: rgb(168, 23, 23);
+            border-style: solid;
+
+        
+          
+        ">
+            </div>
+        </div>
+    </header>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <p style="margin-left: 20px;"> <i class="fa-solid fa-landmark"></i> NAVIGATION</p>
+        <a href="dashboard.html"> <i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="Manualact.html"><i class="fa-solid fa-chart-line"></i> Account Activation</a>
+        <a href="availjobs.html"> <i class="fa-solid fa-list-check"></i> Available Jobs</a>
+        <a href="virtualtr.html"> <i class="fa-solid fa-cloud"></i> Virtual training</a>
+        <a href="awardedjobs.html"> <i class="fa-solid fa-award"></i> Awarded jobs</a>
+        <a href="submitjbs.html"> <i class="fa-solid fa-check"></i> Submit jobs</a>
+        <a href="cashout.html"> <i class="fa-solid fa-wallet"></i> Cashout</a>
+        <a href="myprof.html"><i class="fa-solid fa-user"></i> My profile</a>
+        <a href="#" onclick="logout()"> <i class="fa-solid fa-power-off"></i> Logout</a>
+
+    </div>
+    <div>
+        <p
+            style="color: rgb(5, 5, 5); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bolder; align-items: center; margin-left: 30px; margin-top: 20px; margin-bottom: 20px;">
+            AWARDED TASKS</p>
+    </div>
+    <div id="activationMessage">
+        <p>Ooops. No previously awarded task! Bid and when awarded they will be displayed here.</p>
+
+
+    </div>
+    <footer style="background-color: black;  margin-top: 20px;">
+        <p style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">FREELANCE GRID
+            WRITERS</p>
+        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
+            &copy; 2025 FREELANCE GRID. All Rights Reserved.</p>
+        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
+            Designed by Rollo Houd</p>
+        <div style="display: flex; width: 100%;">
+            <div style="width: 30%;">
+                <p
+                    style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-bottom: 20px; margin-top: 20px; ">
+                    Sitemap</p>
+                <a href="" style="margin-top: 15px;">Privacy Policy</a>
+            </div>
+
+            <div style="width: 30%; margin-left: 50px;">
+                <p
+                    style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin-top: 20px; margin-bottom: 20px; ">
+                    Social</p>
+                <i class="fa-brands fa-facebook"></i>
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-x-twitter"></i>
+                <i class="fa-brands fa-whatsapp"></i>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function logout() {
+            // Clear session storage
+            sessionStorage.clear();
+
+            // Redirect to sign-in page
+            window.location.href = "signin.html";
+        }
+
+        // Retrieve logged-in user data from sessionStorage
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+        if (loggedInUser) {
+
+            // Get the first letter of the first and last name
+            const firstInitial = loggedInUser.firstName.charAt(0).toUpperCase();
+            const lastInitial = loggedInUser.lastName.charAt(0).toUpperCase();
+
+            // Update the profile circle with the initials
+            const profileCircle = document.getElementById("profileCircle");
+            profileCircle.textContent = firstInitial + lastInitial; // Combine initials
+
+
+        }
+        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            //document.getElementById("main").style.marginLeft = "250px";
+            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+        }
+
+        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+        }
+    </script>
+</body>
+
+</html>
