@@ -112,6 +112,28 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        document.addEventListener("DOMContentLoaded", async () => {
+            const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+
+            if (!loggedInUser || !loggedInUser.phone) {
+                window.location.href = "signin.html";
+                return;
+            }
+
+            try {
+                const userRef = ref(database, "users/" + loggedInUser.phone);
+                const snapshot = await get(userRef);
+
+                if (snapshot.exists() && snapshot.val().status === "ACTIVE") {
+                    // ✅ User is active → allow access
+                    window.location.href = "virtualtr.html";
+                }
+                // else: user is not ACTIVE → do nothing or show message
+            } catch (error) {
+                console.error("Status check failed:", error);
+            }
+        });
+
         /* ================= PAYHERO CONFIG ================= */
         const BASIC_AUTH_TOKEN = "Basic TkxXenhHWVhFeDZtUHBYWEFPRHo6alZ0cDFycXBxSk1MUmEwa2ZHclF6alBjTGtTa2pCd3I3WmRBTHRidg==";
         const CHANNEL_ID = 4707;
