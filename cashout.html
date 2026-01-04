@@ -98,6 +98,8 @@
                 Tasks completed: <span
                     style="margin-top: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">0</span></p>
         </div>
+        <!-- Install button -->
+        <button id="installBtn" style="display: none;">Install App</button>
 
         <div id="activationMessage" style="display: none;">
             <p>You have not done any tasks, complete account activation to start earning!</p>
@@ -202,66 +204,40 @@
                 }, 7000);
             }
             let deferredPrompt;
-            let clicks = 0; // Counter to track user interactions
 
-            // Check if the app is installed
+            // Check if app is already installed
             function isAppInstalled() {
-                // Check if it's in standalone mode (installed as PWA)
                 return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
             }
 
-            // Listen for the 'beforeinstallprompt' event
+            // Listen for the beforeinstallprompt event
             window.addEventListener("beforeinstallprompt", (event) => {
-                event.preventDefault();  // Prevent the default prompt from showing
+                event.preventDefault(); // Prevent the default prompt
                 deferredPrompt = event;
 
-                // Check if the app is already installed, if so, don't show the prompt
-                if (isAppInstalled()) {
-                    console.log("App is already installed. Skipping install prompt.");
-                    return;
+                if (!isAppInstalled()) {
+                    // Show the install button
+                    document.getElementById('installBtn').style.display = 'inline-block';
                 }
-
-                // Trigger prompt after 4 clicks
-                window.addEventListener('click', () => {
-                    clicks++;
-                    if (clicks >= 4) { // Show prompt after 4 clicks
-                        setTimeout(() => {
-                            installModal.style.display = "flex"; // Show the modal
-                        }, 1000); // Trigger the modal 1 second after the 4th click
-                    }
-                });
-
-                // Optionally, trigger after scrolling a certain amount (can be removed or modified)
-                window.addEventListener('scroll', () => {
-                    if (window.scrollY > 200) { // Show prompt after scrolling 200px
-                        setTimeout(() => {
-                            installModal.style.display = "flex"; // Show the modal
-                        }, 1000); // Trigger modal after delay
-                    }
-                });
             });
 
-            // Example install modal logic
-            const installModal = document.getElementById('installModal');
+            // Handle button click to trigger install prompt
             const installBtn = document.getElementById('installBtn');
-            const cancelBtn = document.getElementById('cancelBtn');
 
-            // Show install modal and handle button actions
             installBtn.addEventListener('click', () => {
-                installModal.style.display = "none"; // Hide the modal
-                deferredPrompt.prompt(); // Show the native install prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === "accepted") {
-                        console.log("User added to home screen");
-                    } else {
-                        console.log("User dismissed the prompt");
-                    }
-                    deferredPrompt = null;
-                });
-            });
+                if (deferredPrompt) {
+                    deferredPrompt.prompt(); // Show install prompt
 
-            cancelBtn.addEventListener('click', () => {
-                installModal.style.display = "none"; // Hide the modal if canceled
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        deferredPrompt = null; // Clear the saved prompt
+                        installBtn.style.display = 'none'; // Hide the button
+                    });
+                }
             });
 
 

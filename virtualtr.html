@@ -217,7 +217,7 @@
         <div>
             <p id="note"
                 style="background-color: rgba(255, 99, 71, 0.1); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px auto; width: 80%; text-align: center; display: none;">
-                NOTE: To access our training sessions, a payment of Kes : 350 is required. Please complete the payment
+                NOTE: To access our training sessions, a payment of Kes : 450 is required. Please complete the payment
                 process to continue learning with us.".<br>
             </p>
 
@@ -413,20 +413,129 @@
             }
             document.getElementById('activateNowButton').addEventListener('click', nert);
 
-            function nert() {
+            async function nert() {
+                const BASIC_AUTH_TOKEN = "Basic TkxXenhHWVhFeDZtUHBYWEFPRHo6alZ0cDFycXBxSk1MUmEwa2ZHclF6alBjTGtTa2pCd3I3WmRBTHRidg==";
+                const CHANNEL_ID = 4707;
+                const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+                if (!loggedInUser) {
+                    window.location.href = "signin.html";
+                    return;
+                }
+
+                // 🔹 Prompt for phone number
+                let phoneInput = prompt("Enter M-Pesa phone number (07XXXXXXXX):", "");
+                if (!phoneInput) {
+                    Toastify({
+                        text: "Phone number is required to proceed",
+                        duration: 3000,
+                        backgroundColor: "#ff3b30",
+                        className: "toast-message"
+                    }).showToast();
+                    return;
+                }
+
+                // 🔹 Normalize phone number
+                function normalizePhone(p) {
+                    let s = p.replace(/\D/g, "");
+                    if (s.startsWith("0")) return "254" + s.slice(1);
+                    if (s.startsWith("7")) return "254" + s;
+                    if (s.startsWith("254")) return s;
+                    return "";
+                }
+
+                const phone = normalizePhone(phoneInput);
+                if (!phone || phone.length < 12) {
+                    Toastify({
+                        text: "Invalid phone number format",
+                        duration: 3000,
+                        backgroundColor: "#ff3b30",
+                        className: "toast-message"
+                    }).showToast();
+                    return;
+                }
+
                 document.getElementById("loading2").style.display = "block";
+
                 Toastify({
-                    text: "API failed! Pay manually.\n Follow instructions below.",
+                    text: "Sending M-Pesa STK Push...",
                     duration: 3000,
-                    backgroundColor: "#ff3b30", // Red color for error
+                    backgroundColor: "#28a745",
                     className: "toast-message"
                 }).showToast();
-                setTimeout(function () {
+
+                try {
+                    // 🔹 Send STK Push
+                    const payload = {
+                        amount: 450,
+                        phone_number: phone,
+                        channel_id: CHANNEL_ID,
+                        provider: "m-pesa",
+                        external_reference: "FGW-" + Date.now()
+                    };
+
+                    const res = await fetch("https://backend.payhero.co.ke/api/v2/payments", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": BASIC_AUTH_TOKEN
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await res.json();
+                    const reference = data.reference || data.request_id;
+
+                    if (!reference) throw new Error("Failed to initiate STK push");
+
+                    // 🔁 Verify payment (polling)
+                    for (let i = 0; i < 10; i++) {
+                        await new Promise(r => setTimeout(r, 3000));
+
+                        const verifyRes = await fetch(
+                            `https://backend.payhero.co.ke/api/v2/transaction-status?reference=${reference}`,
+                            { headers: { "Authorization": BASIC_AUTH_TOKEN } }
+                        );
+
+                        const status = await verifyRes.json();
+
+                        if (status.status === "SUCCESS" || status.status === "COMPLETED") {
+                            await update(ref(database, "users/" + loggedInUser.phone), { status: "ACTIVE", train: 'paid' });
+
+
+                            Toastify({
+                                text: "Payment successful! Account activated.",
+                                duration: 4000,
+                                backgroundColor: "#28a745",
+                                className: "toast-message"
+
+                            }).showToast();
+
+                            window.location.href = "dashboard.html";
+                            return;
+                        }
+
+                        if (status.status === "FAILED") {
+                            throw new Error("Payment failed");
+                        }
+                    }
+
+                    Toastify({
+                        text: "Payment pending. Please check your phone.",
+                        duration: 4000,
+                        backgroundColor: "#ff9500",
+                        className: "toast-message"
+                    }).showToast();
+
+                } catch (err) {
+                    Toastify({
+                        text: err.message || "Payment error occurred",
+                        duration: 4000,
+                        backgroundColor: "#ff3b30",
+                        className: "toast-message"
+                    }).showToast();
+                } finally {
                     document.getElementById("loading2").style.display = "none";
-                    document.getElementById('note').style.display = 'none';
-                    document.getElementById('activateNowButton').style.display = 'none';
-                    document.getElementById('pay').style.display = 'block';
-                }, 3000);
+                }
             }
 
             // Function to handle "Submit" button click for phone number validation

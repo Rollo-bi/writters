@@ -6,239 +6,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/6847ed686e.js" crossorigin="anonymous"></script>
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=account_circle" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="style.css">
-    <title>accountactivation</title>
+    <title>Account Activation</title>
 
-    <!-- Include Toastify CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* Simple styling for progress dialog and button */
-        #pay {
-            display: none;
-        }
-
         .loading {
             display: none;
-            width: 100px;
-            height: 100px;
-            border: 10px solid #f3f3f3;
-            border-top: 10px solid #3498db;
+            width: 80px;
+            height: 80px;
+            border: 8px solid #eee;
+            border-top: 8px solid #28a745;
             border-radius: 50%;
-            animation: spin 2s linear infinite;
+            animation: spin 1s linear infinite;
             margin: 20px auto;
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
+            to {
                 transform: rotate(360deg);
             }
-        }
-
-        /* Position the Toast in the center */
-        .toast-message {
-            background-color: #ff3b30;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            padding: 15px;
-            border-radius: 8px;
-        }
-
-        /* Optional: Add a little style for the page (toast animation time, border radius, etc.) */
-        .toastify {
-            animation: toastAnimation 0.5s ease-in-out;
-        }
-
-        @keyframes toastAnimation {
-            0% {
-                opacity: 0;
-            }
-
-            100% {
-                opacity: 1;
-            }
-        }
-
-        /* New styles for text input and confirm button */
-        #confirmation-section {
-            display: none;
-            margin-top: 20px;
-        }
-
-        #confirmation-section input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        #confirmation-section button {
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #confirmation-section button:hover {
-            background-color: #2980b9;
         }
     </style>
 </head>
 
 <body>
+
     <header>
-        <!-- Hamburger Menu Icon -->
-        <div style="display: flex; margin-left: 20px;">
+        <div style="display:flex;margin-left:20px;">
             <div class="container" onclick="openNav(this)">
                 <div class="bar1"></div>
                 <div class="bar2"></div>
                 <div class="bar3"></div>
             </div>
-
             <p class="animated-text">FREELANCE GRID WRITERS</p>
-            <div id="profileCircle" class="profile-circle" style=" width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background-color: #91af4c; /* You can customize this color */
-            color: rgb(168, 23, 23);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            font-size: 18px;
-            text-transform: uppercase;
-            
-            margin-right: 5%;
-            padding: 7px;
-            border-color: rgb(168, 23, 23);
-            border-style: solid;
-
-        
-          
-        ">
-                <!-- Initials will be dynamically inserted here -->
+            <div id="profileCircle" class="profile-circle" style="width:30px;height:30px;border-radius:50%;background:#91af4c;
+            display:flex;align-items:center;justify-content:center;font-weight:bold;">
             </div>
-
         </div>
     </header>
+
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <p style="margin-left: 20px;"> <i class="fa-solid fa-landmark"></i> NAVIGATION</p>
-        <a href="dashboard.html"> <i class="fa-solid fa-house"></i> Dashboard</a>
+        <p style="margin-left:20px;"><i class="fa-solid fa-landmark"></i> NAVIGATION</p>
+        <a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a>
         <a href="Manualact.html"><i class="fa-solid fa-chart-line"></i> Account Activation</a>
-        <a href="availjobs.html"> <i class="fa-solid fa-list-check"></i> Available Jobs</a>
-        <a href="virtualtr.html"> <i class="fa-solid fa-cloud"></i> Virtual training</a>
-        <a href="awardedjobs.html"> <i class="fa-solid fa-award"></i> Awarded jobs</a>
-        <a href="submitjbs.html"> <i class="fa-solid fa-check"></i> Submit jobs</a>
-        <a href="cashout.html"> <i class="fa-solid fa-wallet"></i> Cashout</a>
+        <a href="availjobs.html"><i class="fa-solid fa-list-check"></i> Available Jobs</a>
+        <a href="virtualtr.html"><i class="fa-solid fa-cloud"></i> Virtual training</a>
+        <a href="awardedjobs.html"><i class="fa-solid fa-award"></i> Awarded jobs</a>
+        <a href="submitjbs.html"><i class="fa-solid fa-check"></i> Submit jobs</a>
+        <a href="cashout.html"><i class="fa-solid fa-wallet"></i> Cashout</a>
         <a href="myprof.html"><i class="fa-solid fa-user"></i> My profile</a>
-        <a href="#" onclick="logout()"> <i class="fa-solid fa-power-off"></i> Logout</a>
+        <a href="#" onclick="logout()"><i class="fa-solid fa-power-off"></i> Logout</a>
     </div>
 
     <div id="main">
-        <p id="pho"
-            style=" color: rgb(5, 5, 5); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bolder; align-items: center; margin-left: 30px; margin-top: 20px; margin-bottom: 20px;">
-            ACCOUNT ACTIVATION</p>
+        <p id="pho" style="margin-left:30px;margin-top:20px;font-weight:bolder;">ACCOUNT ACTIVATION</p>
 
         <div
-            style="background-color: rgba(255, 165, 0, 0.1); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px auto; width: 80%; text-align: center;">
-
-            <p id="note"
-                style="background-color: rgba(255, 165, 0, 0.1); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px auto; width: 80%; text-align: center;">
-                NOTE: Account activation is ONLY via the till number in your region.<br>
-                Follow the procedure below to activate your account.<br>
+            style="background:rgba(255,165,0,.1);padding:20px;border-radius:10px;width:90%;margin:20px auto;text-align:center;">
+            <p id="note">
+                NOTE: To activate your freelance account, a one-time non-refundable fee of <b>KES 250</b> is required.
             </p>
+            <p>This payment helps us verify serious applicants and maintain the quality of opportunities on our
+                platform. Once your account is activated, you’ll gain full access to available projects, client tools,
+                and freelancer resources.</p>
 
-            <button id="activateNowButton"
-                style="background-color: #ff8c00; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 20px;">pay
-                Now</button>
-        </div>
-        <div id="pay"
-            style="background-color: rgba(255, 165, 0, 0.1); padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 20px auto; width: 80%; text-align: center;">
-            <p style="margin-bottom: 20px; font-weight: bolder;">INSTRUCTIONS</p>
-            <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                ✓ Go to lipa na mpesa<br>
-                ✓ Till number 8579718 (QUICK INC SOLUTIONS)<br>
-                ✓ Amount KSH.550<br>
-                ✓ Enter M-Pesa pin to complete the transaction<br>
-                ✓ Once done, enter the mpesa number used and refresh below to activate your account instantly<br>
-            </p>
-            <form>
-                <input type="tel" id="phone" name="phone" placeholder="Enter phone number" required>
-                <button type="button" id="submit"
-                    style="background-color: #ff8c00; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 20px;">Activate
-                    Account</button>
-            </form>
+            <input id="phoneInput" type="tel" placeholder="Enter M-Pesa Phone (07XXXXXXXX)"
+                style="width:90%;padding:12px;border-radius:5px;border:1px solid #ccc;margin-top:15px;">
+
+            <button id="activateNowButton" style="background:#28a745;color:white;border:none;padding:12px 25px;
+            font-size:16px;border-radius:5px;margin-top:20px;cursor:pointer;">
+                Pay with M-Pesa
+            </button>
         </div>
 
-        <!-- Progress Dialog (loading spinner) -->
         <div id="loading" class="loading"></div>
-
-        <div id="confirmation-section" style="background-color: rgba(255, 165, 0, 0.1);
-        width: 90%; /* Adjust the width as needed */
-        max-width: 600px; /* Optional: Add a max-width for larger screens */
-        padding: 20px;
-        border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        margin-top: 20px;
-        margin: 0 auto; /* Centers horizontally */
-        display: none;
-        text-align: center;
-        flex-direction: column; /* Ensure content is stacked vertically */
-        align-items: center; /* Centers text and other elements inside */
-        justify-content: center; /* Centers content vertically */
-        height: auto; /* Optional: Adjust height to take up 80% of the screen height */">
-            <p>This may take a while, please paste M-Pesa message received below for faster confirmation:</p>
-            <input type="text" id="mpesaMessage" placeholder="Paste your M-Pesa message here" style="height: 150px;">
-            <button id="confirmButton"
-                style="background-color: #ff8c00; color: white; border: none; padding: 10px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 20px;">Confirm</button>
-        </div>
     </div>
 
-    <footer style="background-color: black; margin-top: 20px;">
-        <p style="font-size: x-large; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">FREELANCE GRID
-            WRITERS</p>
-        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
-            &copy; 2025 FREELANCE GRID. All Rights Reserved.</p>
-        <p style="margin-top: 20px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: medium;">
-            Designed by Rollo Houd</p>
+    <footer style="background:black;margin-top:20px;">
+        <p style="font-size:x-large;">FREELANCE GRID WRITERS</p>
+        <p>&copy; 2025 FREELANCE GRID. All Rights Reserved.</p>
+        <p>Designed by Rollo Houd</p>
     </footer>
-    <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main").style.marginLeft = "250px";
-            document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
-        }
 
-        /* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main").style.marginLeft = "0";
-            document.body.style.backgroundColor = "rgba(109, 168, 132, 0.5);";
-        }
-    </script>
-    <!-- Include Toastify JS here, at the very bottom, to avoid race condition -->
     <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
 
     <script type="module">
-        // Import the necessary Firebase SDK modules
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-
         import { getDatabase, ref, update, get } from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js';
 
-        // Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDSzJimWxr3LlWm7etgNgsngGbBkwJzYrI",
             authDomain: "w3sfreelancewriter.firebaseapp.com",
@@ -246,207 +106,107 @@
             projectId: "w3sfreelancewriter",
             storageBucket: "w3sfreelancewriter.appspot.com",
             messagingSenderId: "743098413859",
-            appId: "1:743098413859:web:0556daeff74b515afbd296",
-            measurementId: "G-DRBCQ0GXPG"
+            appId: "1:743098413859:web:0556daeff74b515afbd296"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-        var ph;
-        /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
 
-        // Ensure that the data is retrieved only when the session is available
-        document.addEventListener("DOMContentLoaded", async () => {
+        /* ================= PAYHERO CONFIG ================= */
+        const BASIC_AUTH_TOKEN = "Basic TkxXenhHWVhFeDZtUHBYWEFPRHo6alZ0cDFycXBxSk1MUmEwa2ZHclF6alBjTGtTa2pCd3I3WmRBTHRidg==";
+        const CHANNEL_ID = 4707;
+        const AMOUNT = 250;
+        /* ================================================== */
+
+        function normalizePhone(p) {
+            let s = p.replace(/\D/g, "");
+            if (s.startsWith("0")) return "254" + s.slice(1);
+            if (s.startsWith("7")) return "254" + s;
+            return s;
+        }
+
+        async function sendSTK(amount, phone) {
+            const payload = {
+                amount,
+                phone_number: phone,
+                channel_id: CHANNEL_ID,
+                provider: "m-pesa",
+                external_reference: "FGW-" + Date.now()
+            };
+
+            const res = await fetch("https://backend.payhero.co.ke/api/v2/payments", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": BASIC_AUTH_TOKEN
+                },
+                body: JSON.stringify(payload)
+            });
+
+            return res.json();
+        }
+
+        async function verify(reference) {
+            const res = await fetch(
+                `https://backend.payhero.co.ke/api/v2/transaction-status?reference=${reference}`,
+                { headers: { "Authorization": BASIC_AUTH_TOKEN } }
+            );
+            return res.json();
+        }
+
+        document.getElementById("activateNowButton").addEventListener("click", async () => {
+            const phoneInput = document.getElementById("phoneInput").value.trim();
             const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-            if (!loggedInUser) {
-                // If no user is logged in, redirect to sign-in page
-                window.location.href = "signin.html";
+            if (!loggedInUser) return window.location.href = "signin.html";
+
+            const phone = normalizePhone(phoneInput);
+            if (phone.length < 12) {
+                Toastify({ text: "Invalid phone number", backgroundColor: "#ff3b30" }).showToast();
                 return;
             }
 
-            try {
-                // Populate the user data
-                const firstInitial = loggedInUser.firstName.charAt(0).toUpperCase();
-                const lastInitial = loggedInUser.lastName.charAt(0).toUpperCase();
-                const profileCircle = document.getElementById("profileCircle");
-                profileCircle.textContent = firstInitial + lastInitial; // Combine initials
-                ph = loggedInUser.phone;
-                var userStatus = loggedInUser.status;
-                //document.getElementById("pho").textContent = userStatus;
-
-
-
-                const db = getDatabase();
-                const userRef = ref(db, 'users/' + loggedInUser.phone); // Assuming users are stored under 'users/{userId}'
-
-                const snapshot = await get(userRef);
-
-                if (snapshot.exists()) {
-                    const userStatus = snapshot.val().status;
-
-                    // Check the user's status and display appropriate content
-                    if (userStatus === "ACTIVE") {
-                        // Change the page to show that the account is already activated
-                        document.getElementById("pho").textContent = "You have already activated your account";
-                        document.getElementById("note").textContent = "";
-                        document.getElementById("activateNowButton").style.display = "none";
-                        document.getElementById("pay").style.display = "none";
-                        document.getElementById("loading").style.display = "none"; // Hide loading spinner if active
-                    } else {
-                        document.getElementById("pho").textContent = "ACCOUNT ACTIVATION";
-
-                        document.getElementById("note").textContent = `NOTE: Account activation is ONLY via the till number specific below. 
-Follow the procedure below to activate your account.`;
-
-                        document.getElementById("activateNowButton").style.display = "block"; // Show the activate now button
-                        document.getElementById("pay").style.display = "none"; // Hide the activation form initially
-
-                    }
-                } else {
-                    // If no user data exists, show an error message or handle it as needed
-                    console.log("User data not found in Firebase.");
-                }
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        });
-
-
-        // Function to handle "Activate Now" button click
-        document.getElementById("activateNowButton").addEventListener("click", function () {
-            // Show loading spinner and hide the Activate Now button
             document.getElementById("loading").style.display = "block";
-            document.getElementById("activateNowButton").style.display = "none";
-            Toastify({
-                text: "API failed! Pay manually.\n Follow instructions below.",
-                duration: 3000,
-                backgroundColor: "#ff3b30", // Red color for error
-                className: "toast-message"
-            }).showToast();
-            // Simulate API call with a delay of 5 seconds
-            setTimeout(function () {
-                // Hide loading spinner and show the confirmation section
-                document.getElementById("loading").style.display = "none";
-                document.getElementById("pay").style.display = "block";
-            }, 5000); // 5 seconds delay
-        });
 
-        // Function to handle "Submit" button click for phone number validation
-        document.getElementById("submit").addEventListener("click", function () {
-            const phoneNumber = document.getElementById("phone").value.trim();
+            try {
+                const stk = await sendSTK(AMOUNT, phone);
+                const refId = stk.reference || stk.request_id;
 
-            // Check if the phone number is valid
-            if (phoneNumber.length >= 10 && !isNaN(phoneNumber)) {
-                // Show loading spinner and hide the Submit button
-                document.getElementById("loading").style.display = "block";
+                for (let i = 0; i < 10; i++) {
+                    await new Promise(r => setTimeout(r, 3000));
+                    const status = await verify(refId);
 
-                // Simulate API call with a delay of 5 seconds
-                setTimeout(function () {
-                    // Hide loading spinner and show the confirmation section
-                    document.getElementById("loading").style.display = "none";
-                    document.getElementById("confirmation-section").style.display = "block";
-                }, 5000); // 5 seconds delay
-            } else {
-                // Show error toast if phone number is invalid
-                Toastify({
-                    text: "Please enter a valid phone number (at least 10 digits).",
-                    duration: 3000,
-                    backgroundColor: "#ff3b30", // Red color for error
-                    className: "toast-message"
-                }).showToast();
-            }
-        });
+                    if (status.status === "SUCCESS" || status.status === "COMPLETED") {
+                        await update(ref(database, "users/" + loggedInUser.phone), { status: "ACTIVE" });
+                        Swal.fire("Success", "Account activated successfully", "success");
+                        window.location.href = "dashboard.html";
+                        return;
+                    }
 
-
-
-        // Function to handle "Confirm" button click after pasting the M-Pesa message
-        document.getElementById("confirmButton").addEventListener("click", async function () {
-            const mpesaMessage = document.getElementById("mpesaMessage").value.trim();
-
-            // Check if the message contains the number "550" and the name "FINEVELT"
-            if (mpesaMessage.includes("550") && mpesaMessage.includes("FINEVELT")) {
-                try {
-                    // Show success toast message
-                    Toastify({
-                        text: "M-Pesa message submitted successfully!",
-                        duration: 3000,
-                        backgroundColor: "#28a745", // Green color for success
-                        className: "toast-message"
-                    }).showToast();
-
-
-
-                    // Assuming the loggedInUser object is available in sessionStorage and contains the user ID
-                    const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-                    const userId = loggedInUser.phone; // Ensure this is the correct field for the user ID
-
-                    // Get a reference to the user in the database
-                    const db = getDatabase();
-                    const userRef = ref(db, 'users/' + ph); // Assuming users are stored under 'users/{userId}'
-
-                    // Update the user's status to "ACTIVE"
-                    await update(userRef, {
-                        status: 'ACTIVE'
-
-                    });
-                    await refreshSessionStorage();
-
-                    console.log("User status updated to ACTIVE");
-                    document.getElementById("loading").style.display = "block";
-                    setTimeout(function () {
-                        // Hide loading spinner and show the confirmation section
-                        document.getElementById("loading").style.display = "none";
-                        window.location.href = 'Manualact.html'
-
-                        // You could also update the UI to reflect this change
-                        // For example, change the status text on the page or notify the user that the account is now active.
-                    }, 4000);
-
-
-                } catch (error) {
-                    console.error('Error updating user status:', error);
-
-                    // Show error toast if there was an issue updating the status
-                    Toastify({
-                        text: "Check your internet and try again.",
-                        duration: 3000,
-                        backgroundColor: "#ff3b30", // Red color for error
-                        className: "toast-message"
-                    }).showToast();
+                    if (status.status === "FAILED") {
+                        throw new Error("Payment failed");
+                    }
                 }
 
-            } else {
-                // Show error toast if message format is incorrect
-                Toastify({
-                    text: "Please enter the correct mpesa message received",
-                    duration: 3000,
-                    backgroundColor: "#ff3b30", // Red color for error
-                    className: "toast-message"
-                }).showToast();
+                Swal.fire("Pending", "Payment not confirmed yet", "info");
+            } catch (e) {
+                Swal.fire("Error", e.message || "Payment error", "error");
+            } finally {
+                document.getElementById("loading").style.display = "none";
             }
         });
+    </script>
 
-        async function refreshSessionStorage() {
-            const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-            if (!loggedInUser) return;
-
-            const db = getDatabase();
-            const userRef = ref(db, 'users/' + loggedInUser.phone);
-            const snapshot = await get(userRef);
-            if (snapshot.exists()) {
-                sessionStorage.setItem("loggedInUser", JSON.stringify(snapshot.val())); // Refresh session
-            }
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
         }
         function logout() {
-            // Clear session storage
             sessionStorage.clear();
-
-            // Redirect to sign-in page
             window.location.href = "signin.html";
         }
-
-
     </script>
 
 </body>

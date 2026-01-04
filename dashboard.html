@@ -47,11 +47,31 @@
 
         </div>
     </header>
+    <style>
+        .glow-link {
+            color: #f12929;
+            text-decoration: none;
+            text-shadow: 0 0 5px #f12929,
+                0 0 10px #f12929,
+                0 0 20px #f12929;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #f12929;
+            }
+
+            to {
+                text-shadow: 0 0 20px #00ffae, 0 0 30px #00ffae;
+            }
+        }
+    </style>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <p style="margin-left: 20px;"> <i class="fa-solid fa-landmark"></i> NAVIGATION</p>
         <a href="dashboard.html"> <i class="fa-solid fa-house"></i> Dashboard</a>
-        <a href="Manualact.html"><i class="fa-solid fa-chart-line"></i> Account Activation</a>
+        <a href="Manualact.html" class="glow-link"><i class="fa-solid fa-chart-line"></i> Account Activation</a>
         <a href="availjobs.html"> <i class="fa-solid fa-list-check"></i> Available Jobs</a>
         <a href="virtualtr.html"> <i class="fa-solid fa-cloud"></i> Virtual training</a>
         <a href="awardedjobs.html"> <i class="fa-solid fa-award"></i> Awarded jobs</a>
@@ -107,6 +127,10 @@
                 <p id="userStatus"
                     style="margin-top: 10px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Loading...
                 </p>
+                <button>
+                    <a href="Manualact.html"
+                        style="font-size: medium; background-color: #ec9169; padding: 10px; margin-top: 2px;">Activate</a>
+                </button>
             </div>
         </div>
 
@@ -188,6 +212,7 @@
 
         // Retrieve logged-in user data from sessionStorage
         const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        openNav(this);
 
         if (loggedInUser) {
 
